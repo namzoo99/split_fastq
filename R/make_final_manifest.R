@@ -46,7 +46,7 @@ is_fqs_multiplexing <- unique(header) %>% group_by(aliquot_barcode) %>% summaris
 name_of_manifest <- opt$raw_manifest %>% str_split("/") %>% .[[1]] %>% str_subset(".csv")
 
 # Write a new manifest file that reflects the status of multiplexing
-if(header %>% group_by(file_name) %>% summarise(N=n()) %>% .$N %>% unique == 2){
+if(header[header$aliquot_barcode %in% is_fqs_multiplexing$aliquot_barcode,] %>% group_by(aliquot_barcode) %>% summarise(N=n()) >= 2){
 
       if(length(unique(is_fqs_multiplexing$N)) == 1 & length(unique(header)) == 1){
         
@@ -106,6 +106,6 @@ if(header %>% group_by(file_name) %>% summarise(N=n()) %>% .$N %>% unique == 2){
 
     }else{
   
-  file.create("Unmathed_RGPU_between_fq1_fq2.csv")
+  file.create("multiplexed_FQ_not_splitted")
   
 }
