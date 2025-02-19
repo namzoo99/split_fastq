@@ -22,8 +22,6 @@ raw_fq_manifest <- read_csv(opt$raw_manifest) %>% select(c(-RGID, -RGPU))
 fq_header <- list.files(opt$previous_output_path, recursive = TRUE, full.names = TRUE, pattern = "*_RGPU_fq*") %>% 
   map_df(~read_tsv(file=., col_names = "fq_header", id="file_name")) %>% unique
 
-# splitted_fq_path
-
 # --split_fq_publish_dir
 split_fq_publish_dir <- opt$output_path
 
