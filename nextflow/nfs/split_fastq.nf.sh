@@ -7,6 +7,11 @@ workflow split_fastq {
 
 		read_fq(raw_fq_samples)
 
+		count = read_fq.out.map{aliquot, RGPU_fq1, count, n_read, cmds -> [ count ].collect()}
+						   .unique()
+
+		make_manifest_for_single_rgid(count, R_ch)
+
 		gdc_fastq_splitter(raw_fq_samples.combine(read_fq.out.map{aliquot, RGPU_fq1, count, n_read, cmds -> [ aliquot, count ]}, by:0))
 
 		validate_splitted_fq(gdc_fastq_splitter.out.map{aliquot, splitted_FQs, splitted_FQpath, cmds -> [ aliquot, splitted_FQs ]},
@@ -52,6 +57,38 @@ process read_fq {
 		#zcat ${fq2} | wc -l | awk '{print \$1/4}' > ./${aliquot_barcode}_fq2_n_of_read.txt
 
 		count=\$(awk 'END {print NR}' ${aliquot_barcode}_RGPU_fq1.txt)
+
+		"""
+
+}
+
+process make_manifest_for_single_rgid { 
+
+	tag "all files"
+
+	publishDir "${params.scratch_dir}/results/${params.workflow_name}/final_manifest", pattern: "*", mode: 'copy'
+
+	label "r_for_split_fastq"
+
+	input: val(count)
+		   file(R_dir)
+
+	output:
+		path("*.csv")
+
+	when:
+		count = "1"
+
+	script:
+
+		"""
+		#!/bin/bash
+
+		Rscript ${R_dir}/make_final_manifest_for_single_rgid.R \
+		    --raw_manifest ${params.dna_legacy_file_sheet} \
+		    --previous_output_path ${params.scratch_dir}/results/${params.workflow_name} \
+		 	--output_path ./ && \
+		 	ls -al -R ./ >> env.txt
 
 		"""
 
