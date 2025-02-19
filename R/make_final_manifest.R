@@ -57,7 +57,7 @@ if(header[header$aliquot_barcode %in% is_fqs_multiplexing$aliquot_barcode,] %>% 
 
       raw_fq_manifest %>%
           left_join(all_fq_ino, by=c("aliquot_barcode")) %>% relocate(RGID,RGPL,RGPU,RGLB,RGDT,RGCN,FQ1,FQ2,action, .after = last_col()) %>% 
-          write_csv(paste0(split_fq_publish_dir, Sys.Date(), "-", name_of_manifest))
+          write_csv(paste0(split_fq_publish_dir, Sys.Date(), "-", name_of_manifest), na="")
     
       }else if(length(unique(is_fqs_multiplexing$N)) == 2 & length(unique(header)) == 2){
         
@@ -75,7 +75,7 @@ if(header[header$aliquot_barcode %in% is_fqs_multiplexing$aliquot_barcode,] %>% 
 
         raw_fq_manifest %>%
           left_join(multiplexed_fq_info, by=c("aliquot_barcode")) %>% relocate(RGID,RGPL,RGPU,RGLB,RGDT,RGCN,FQ1,FQ2,action, .after = last_col()) %>% 
-          write_csv(paste0(split_fq_publish_dir, Sys.Date(), "-", name_of_manifest))
+          write_csv(paste0(split_fq_publish_dir, Sys.Date(), "-", name_of_manifest), na="")
     
       }else{
 
@@ -100,7 +100,7 @@ if(header[header$aliquot_barcode %in% is_fqs_multiplexing$aliquot_barcode,] %>% 
                 left_join(all_fq_ino, by=c("aliquot_barcode")) %>% relocate(RGID,RGPL,RGPU,RGLB,RGDT,RGCN,FQ1,FQ2,action, .after = last_col()),
               raw_fq_manifest[raw_fq_manifest$aliquot_barcode %in% multiplexed_fq_info$aliquot_barcode,] %>% select(c(-FQ1, -FQ2)) %>%
                 left_join(multiplexed_fq_info, by=c("aliquot_barcode")) %>% relocate(RGID,RGPL,RGPU,RGLB,RGDT,RGCN,FQ1,FQ2,action, .after = last_col())) %>% 
-          write_csv(paste0(split_fq_publish_dir, Sys.Date(), "-", name_of_manifest))
+          write_csv(paste0(split_fq_publish_dir, Sys.Date(), "-", name_of_manifest), na="")
   
       }
 
