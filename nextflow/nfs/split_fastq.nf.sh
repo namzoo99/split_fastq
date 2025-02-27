@@ -66,7 +66,7 @@ process make_manifest_for_single_rgid {
 
 	tag "all files"
 
-	publishDir "${params.scratch_dir}/results/${params.workflow_name}/final_manifest", pattern: "*", mode: 'copy'
+	publishDir "${params.scratch_dir}/results/${params.workflow_name}/final_manifest/no_multiplexed", pattern: "*", mode: 'copy'
 
 	label "r_for_split_fastq"
 
@@ -164,7 +164,7 @@ process make_manifest {
 
 	tag "all files"
 
-	publishDir "${params.scratch_dir}/results/${params.workflow_name}/final_manifest", pattern: "*", mode: 'copy'
+	publishDir "${params.scratch_dir}/results/${params.workflow_name}/final_manifest/multiplexed", pattern: "*", mode: 'copy'
 
 	label "r_for_split_fastq"
 
