@@ -66,7 +66,7 @@ if(header[header$aliquot_barcode %in% is_fqs_multiplexing$aliquot_barcode,] %>% 
          aliquot_barcode = sapply(str_split(splitted_fqs, "_"), '[[', 1)) %>% 
   mutate(RGPU = sapply(str_split(splitted_fqs, "_"), function(x){paste0(x[2], ".", x[3])}),
          RGID = sapply(str_split(splitted_fqs, "_"), function(x){paste0(str_sub(x[2], 1, 5), ".", x[3])})) %>% 
-  mutate(FQ = paste0(opt$previous_output_path, "/gdc_fastq_splitter/", splitted_fqs)) %>% 
+  mutate(FQ = paste0(opt$previous_output_path, "/gdc_fastq_splitter/", aliquot_barcode, "/", splitted_fqs)) %>% 
   select(c(-tmppath, -splitted_fqs))
 
   multiplexed_fq_info <- left_join(splittd_fq[str_detect(splittd_fq$FQ, "_R1.fq.gz"),],
@@ -89,7 +89,7 @@ if(header[header$aliquot_barcode %in% is_fqs_multiplexing$aliquot_barcode,] %>% 
          aliquot_barcode = sapply(str_split(splitted_fqs, "_"), '[[', 1)) %>% 
   mutate(RGPU = sapply(str_split(splitted_fqs, "_"), function(x){paste0(x[2], ".", x[3])}),
          RGID = sapply(str_split(splitted_fqs, "_"), function(x){paste0(str_sub(x[2], 1, 5), ".", x[3])})) %>% 
-  mutate(FQ = paste0(opt$previous_output_path, "/gdc_fastq_splitter/", splitted_fqs)) %>% 
+  mutate(FQ = paste0(opt$previous_output_path, "/gdc_fastq_splitter/", aliquot_barcode, "/", splitted_fqs)) %>% 
   select(c(-tmppath, -splitted_fqs))
 
   multiplexed_fq_info <- left_join(splittd_fq[str_detect(splittd_fq$FQ, "_R1.fq.gz"),],
