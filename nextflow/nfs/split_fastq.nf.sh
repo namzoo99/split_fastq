@@ -50,7 +50,7 @@ process read_fq {
 		"""
 		#!/bin/bash
 
-		zcat ${fq1} | grep '@' | cut -c 1-23 | uniq > ./${aliquot_barcode}_RGPU_fq1.txt
+		zcat ${fq1} | grep '^@' | awk '{split(\$0, a, ":"); print a[1] ":" a[2] ":" a[3] ":" a[4]}' | sort -u > ./${aliquot_barcode}_RGPU_fq1.txt
 		#zcat ${fq2} | grep '@' | cut -c 1-23 | uniq > ./${aliquot_barcode}_RGPU_fq2.txt
 
 		zcat ${fq1} | wc -l | awk '{print \$1/4}' > ./${aliquot_barcode}_fq1_n_of_read.txt
